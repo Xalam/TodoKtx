@@ -12,7 +12,7 @@ import kotlinx.coroutines.launch
 
 class TodoViewModel(application: Application): AndroidViewModel(application) {
 
-    private val getAllData: LiveData<List<Todo>>
+    val getAllData: LiveData<List<Todo>>
     private val repository: TodoRepository
 
     init {
