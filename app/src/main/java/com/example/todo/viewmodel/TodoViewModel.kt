@@ -6,7 +6,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.viewModelScope
 import com.example.todo.data.Todo
 import com.example.todo.data.TodoDatabase
-import com.example.todo.data.TodoRepository
+import com.example.todo.repository.TodoRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
@@ -24,6 +24,12 @@ class TodoViewModel(application: Application): AndroidViewModel(application) {
     fun addTodo(todo: Todo) {
         viewModelScope.launch(Dispatchers.IO) {
             repository.addTodo(todo)
+        }
+    }
+
+    fun updateTodo(todo: Todo) {
+        viewModelScope.launch(Dispatchers.IO) {
+            repository.updateTodo(todo)
         }
     }
 }

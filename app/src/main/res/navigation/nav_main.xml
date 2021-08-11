@@ -13,6 +13,9 @@
         <action
             android:id="@+id/action_homeFragment_to_detailFragment"
             app:destination="@id/detailFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_editFragment"
+            app:destination="@id/editFragment" />
     </fragment>
     <fragment
         android:id="@+id/detailFragment"
@@ -22,5 +25,17 @@
         <action
             android:id="@+id/action_detailFragment_to_homeFragment"
             app:destination="@id/homeFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/editFragment"
+        android:name="com.example.todo.ui.fragment.EditFragment"
+        android:label="fragment_edit"
+        tools:layout="@layout/fragment_edit" >
+        <action
+            android:id="@+id/action_editFragment_to_homeFragment"
+            app:destination="@id/homeFragment" />
+        <argument
+            android:name="currentTodo"
+            app:argType="com.example.todo.data.Todo" />
     </fragment>
 </navigation>

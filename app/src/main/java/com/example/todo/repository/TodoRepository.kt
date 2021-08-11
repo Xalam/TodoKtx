@@ -1,6 +1,8 @@
-package com.example.todo.data
+package com.example.todo.repository
 
 import androidx.lifecycle.LiveData
+import com.example.todo.data.Todo
+import com.example.todo.data.TodoDao
 
 class TodoRepository(private val todoDao: TodoDao) {
 
@@ -8,5 +10,9 @@ class TodoRepository(private val todoDao: TodoDao) {
 
     suspend fun addTodo(todo: Todo) {
         todoDao.insert(todo)
+    }
+
+    suspend fun updateTodo(todo: Todo) {
+        todoDao.update(todo)
     }
 }

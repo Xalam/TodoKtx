@@ -3,9 +3,11 @@ package com.example.todo.ui.adapter
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.navigation.Navigation
 import androidx.recyclerview.widget.RecyclerView
 import com.example.todo.data.Todo
 import com.example.todo.databinding.ItemTodoBinding
+import com.example.todo.ui.fragment.HomeFragmentDirections
 
 class TodoAdapter: RecyclerView.Adapter<TodoAdapter.ListViewHolder>() {
 
@@ -30,6 +32,11 @@ class TodoAdapter: RecyclerView.Adapter<TodoAdapter.ListViewHolder>() {
             with(binding) {
                 textTitleItem.text = todo.title
                 textDescriptionItem.text = todo.description
+
+                itemTodoLayout.setOnClickListener {
+                    val action = HomeFragmentDirections.actionHomeFragmentToEditFragment(todo)
+                    Navigation.findNavController(itemTodoLayout).navigate(action)
+                }
             }
         }
     }
