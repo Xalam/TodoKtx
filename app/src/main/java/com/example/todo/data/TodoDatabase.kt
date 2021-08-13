@@ -6,7 +6,7 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.sqlite.db.SupportSQLiteDatabase
 
-@Database(entities = [Todo::class, Category::class], version = 1)
+@Database(entities = [Todo::class, Category::class], version = 2)
 abstract class TodoDatabase: RoomDatabase() {
 
     abstract fun todoDao(): TodoDao

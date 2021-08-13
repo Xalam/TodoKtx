@@ -3,7 +3,12 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="submit">Submit</string>
-    <string name="title">Title</string>
-    <string name="description">Description</string>
+    <string name="title">Input new task here</string>
+    <string name="description">Input description here</string>
     <string name="delete">Delete</string>
+    <string name="no_category">No Category</string>
+    <string name="new_category">Create new category</string>
+    <string name="input_here">Input here</string>
+    <string name="save">Save</string>
+    <string name="cancel">Cancel</string>
 </resources>

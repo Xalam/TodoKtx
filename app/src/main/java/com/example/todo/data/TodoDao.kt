@@ -17,14 +17,17 @@ interface TodoDao {
     @Query("DELETE FROM todo_table")
     suspend fun deleteAllTodos()
 
-    @Query("Select * From todo_table order by id desc")
+    @Query("SELECT * FROM todo_table ORDER BY id DESC")
     fun getAllTodos(): LiveData<List<Todo>>
 
-    @Query("Select * From todo_table where category_id = :id_cat order by id desc")
+    @Query("SELECT * FROM todo_table WHERE category_id = :id_cat ORDER BY id DESC")
     fun getCatTodos(id_cat: Int): LiveData<List<Todo>>
 
-    @Insert
-    fun insertCategory(category: Category)
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertCategory(category: Category)
+
+    @Query("SELECT * FROM category_table")
+    fun getAllCategory(): LiveData<List<Category>>
 
     @Delete
     fun deleteCategory(category: Category)
