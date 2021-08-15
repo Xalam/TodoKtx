@@ -11,4 +11,5 @@
     <string name="input_here">Input here</string>
     <string name="save">Save</string>
     <string name="cancel">Cancel</string>
+    <string name="check_all_completed_tasks">Check all completed tasks</string>
 </resources>

@@ -56,7 +56,7 @@ class EditFragment : Fragment(), View.OnClickListener {
 
         if (inputCheck(title, description)) {
             //Create User Object
-            val updateTodo = Todo(args.currentTodo.id, title, description, 1, "2021-08-11", 1)
+            val updateTodo = Todo(args.currentTodo.id, title, description, 1, "2021-08-11", 0)
 
             //Create Current User
             todoViewModel.updateTodo(updateTodo)

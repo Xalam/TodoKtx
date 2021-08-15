@@ -17,8 +17,11 @@ interface TodoDao {
     @Query("DELETE FROM todo_table")
     suspend fun deleteAllTodos()
 
-    @Query("SELECT * FROM todo_table ORDER BY id DESC")
-    fun getAllTodos(): LiveData<List<Todo>>
+    @Query("UPDATE todo_table SET status = :status_num WHERE id = :id")
+    suspend fun updateStatusTodo(status_num: Int, id: Int)
+
+    @Query("SELECT * FROM todo_table WHERE status = :status_num ORDER BY id DESC")
+    fun getAllTodos(status_num: Int): LiveData<List<Todo>>
 
     @Query("SELECT * FROM todo_table WHERE category_id = :id_cat ORDER BY id DESC")
     fun getCatTodos(id_cat: Int): LiveData<List<Todo>>

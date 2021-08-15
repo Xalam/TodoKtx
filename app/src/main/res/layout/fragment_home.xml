@@ -91,10 +91,20 @@
         android:tint="@color/white"
         tools:ignore="SpeakableTextPresentCheck" />
 
+    <TextView
+        android:id="@+id/text_check_all"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/lin_chip_category"
+        android:gravity="center"
+        android:text="@string/check_all_completed_tasks"
+        android:layout_marginTop="10dp"
+        android:textSize="12sp"/>
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_todo"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/lin_chip_category"
+        android:layout_below="@id/text_check_all"
         android:layout_marginTop="15dp" />
 </RelativeLayout>

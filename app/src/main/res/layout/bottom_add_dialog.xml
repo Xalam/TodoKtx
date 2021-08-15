@@ -23,11 +23,11 @@
         android:id="@+id/chip_category_id"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="10dp"
-        android:layout_marginLeft="10dp"
+        android:layout_marginStart="15dp"
+        android:layout_marginLeft="15dp"
         android:layout_marginTop="15dp"
         android:visibility="invisible"
-        app:layout_constraintStart_toEndOf="@+id/imageButton"
+        app:layout_constraintStart_toEndOf="@+id/button_time_add"
         app:layout_constraintTop_toBottomOf="@+id/edt_description_add" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -96,7 +96,7 @@
         tools:ignore="TextContrastCheck" />
 
     <ImageButton
-        android:id="@+id/imageButton"
+        android:id="@+id/button_date_add"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="15dp"
@@ -108,7 +108,35 @@
         app:layout_constraintStart_toEndOf="@+id/chip_category"
         app:layout_constraintTop_toBottomOf="@+id/edt_description_add"
         app:tint="@color/teal_200"
-        tools:ignore="SpeakableTextPresentCheck" />
+        tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck" />
+
+    <ImageButton
+        android:id="@+id/button_time_add"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="15dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginTop="15dp"
+        android:background="@color/white"
+        android:minHeight="48dp"
+        android:src="@drawable/ic_time"
+        app:layout_constraintStart_toEndOf="@+id/button_date_add"
+        app:layout_constraintTop_toBottomOf="@+id/edt_description_add"
+        app:tint="@color/teal_200"
+        tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck" />
+
+    <TextView
+        android:id="@+id/text_date_add"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:textColor="@color/teal_200"
+        android:textSize="9sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@+id/button_date_add"
+        app:layout_constraintEnd_toEndOf="@+id/button_date_add"
+        app:layout_constraintStart_toStartOf="@+id/button_date_add"
+        app:layout_constraintTop_toTopOf="@+id/button_date_add" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
