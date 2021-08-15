@@ -16,6 +16,9 @@
         <action
             android:id="@+id/action_homeFragment_to_editFragment"
             app:destination="@id/editFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_completedFragment"
+            app:destination="@id/completedFragment" />
     </fragment>
     <fragment
         android:id="@+id/detailFragment"
@@ -37,5 +40,14 @@
         <argument
             android:name="currentTodo"
             app:argType="com.example.todo.data.Todo" />
+    </fragment>
+    <fragment
+        android:id="@+id/completedFragment"
+        android:name="com.example.todo.ui.fragment.CompletedFragment"
+        android:label="fragment_completed"
+        tools:layout="@layout/fragment_completed" >
+        <action
+            android:id="@+id/action_completedFragment_to_homeFragment"
+            app:destination="@id/homeFragment" />
     </fragment>
 </navigation>
