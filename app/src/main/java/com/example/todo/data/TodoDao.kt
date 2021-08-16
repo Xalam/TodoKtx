@@ -23,7 +23,7 @@ interface TodoDao {
     @Query("SELECT * FROM todo_table WHERE status = :status_num ORDER BY id DESC")
     fun getAllTodos(status_num: Int): LiveData<List<Todo>>
 
-    @Query("SELECT * FROM todo_table WHERE category_id = :id_cat ORDER BY id DESC")
+    @Query("SELECT * FROM todo_table WHERE category_id = :id_cat AND status = 0 ORDER BY id DESC")
     fun getCatTodos(id_cat: Int): LiveData<List<Todo>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)

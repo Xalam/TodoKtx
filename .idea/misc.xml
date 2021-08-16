@@ -12,10 +12,13 @@
         <entry key="..\:/Projects/AndroidStudioProjects/Todo/app/src/main/res/layout/bottom_add_dialog.xml" value="0.5" />
         <entry key="..\:/Projects/AndroidStudioProjects/Todo/app/src/main/res/layout/category_add_dialog.xml" value="0.25" />
         <entry key="..\:/Projects/AndroidStudioProjects/Todo/app/src/main/res/layout/fragment_blank.xml" value="0.1" />
+        <entry key="..\:/Projects/AndroidStudioProjects/Todo/app/src/main/res/layout/fragment_category.xml" value="0.12083333333333333" />
         <entry key="..\:/Projects/AndroidStudioProjects/Todo/app/src/main/res/layout/fragment_completed.xml" value="0.1" />
         <entry key="..\:/Projects/AndroidStudioProjects/Todo/app/src/main/res/layout/fragment_detail.xml" value="0.21" />
         <entry key="..\:/Projects/AndroidStudioProjects/Todo/app/src/main/res/layout/fragment_edit.xml" value="0.18297101449275363" />
         <entry key="..\:/Projects/AndroidStudioProjects/Todo/app/src/main/res/layout/fragment_home.xml" value="0.22" />
+        <entry key="..\:/Projects/AndroidStudioProjects/Todo/app/src/main/res/layout/item_category.xml" value="0.33" />
+        <entry key="..\:/Projects/AndroidStudioProjects/Todo/app/src/main/res/layout/item_chip_category.xml" value="0.13229166666666667" />
         <entry key="..\:/Projects/AndroidStudioProjects/Todo/app/src/main/res/layout/item_text_category.xml" value="0.33" />
         <entry key="..\:/Projects/AndroidStudioProjects/Todo/app/src/main/res/layout/item_todo.xml" value="0.22" />
         <entry key="..\:/Projects/AndroidStudioProjects/Todo/app/src/main/res/menu/menu_item.xml" value="0.22" />

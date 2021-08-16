@@ -50,7 +50,7 @@ class TodoViewModel(application: Application) : AndroidViewModel(application) {
 
     fun updateStatusTodo(status_num: Int, id: Int) {
         viewModelScope.launch(Dispatchers.IO) {
-            delay(1000L)
+            delay(500L)
             repository.updateStatusTodo(status_num, id)
         }
     }
@@ -65,5 +65,9 @@ class TodoViewModel(application: Application) : AndroidViewModel(application) {
         viewModelScope.launch(Dispatchers.IO) {
             repository.addCategoryTodo(category)
         }
+    }
+
+    fun getTodoByCat(id_cat: Int): LiveData<List<Todo>> {
+        return repository.readTodoByCat(id_cat)
     }
 }

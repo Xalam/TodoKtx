@@ -48,7 +48,7 @@ class TodoAdapter : RecyclerView.Adapter<TodoAdapter.ListViewHolder>() {
 
                 checkItem.setOnClickListener {
                     if (checkItem.progress == 0f) {
-                        checkItem.speed = 2F
+                        checkItem.speed = 2.5F
                         checkItem.playAnimation()
                         itemClick.onItemClickStatus(todo.id!!, todo.status)
                     } else {

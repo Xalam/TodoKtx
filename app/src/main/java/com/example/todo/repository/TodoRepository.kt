@@ -37,4 +37,8 @@ class TodoRepository(private val todoDao: TodoDao) {
     suspend fun addCategoryTodo(category: Category) {
         todoDao.insertCategory(category)
     }
+
+    fun readTodoByCat(id_cat: Int): LiveData<List<Todo>> {
+        return todoDao.getCatTodos(id_cat)
+    }
 }

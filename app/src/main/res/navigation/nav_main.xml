@@ -19,6 +19,9 @@
         <action
             android:id="@+id/action_homeFragment_to_completedFragment"
             app:destination="@id/completedFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_categoryFragment"
+            app:destination="@id/categoryFragment" />
     </fragment>
     <fragment
         android:id="@+id/detailFragment"
@@ -48,6 +51,15 @@
         tools:layout="@layout/fragment_completed" >
         <action
             android:id="@+id/action_completedFragment_to_homeFragment"
+            app:destination="@id/homeFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/categoryFragment"
+        android:name="com.example.todo.ui.fragment.CategoryFragment"
+        android:label="fragment_category"
+        tools:layout="@layout/fragment_category" >
+        <action
+            android:id="@+id/action_categoryFragment_to_homeFragment"
             app:destination="@id/homeFragment" />
     </fragment>
 </navigation>

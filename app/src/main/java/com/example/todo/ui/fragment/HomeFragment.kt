@@ -28,6 +28,8 @@ import com.example.todo.utils.OtherFunction
 import com.example.todo.utils.SharedPref
 import com.example.todo.viewmodel.TodoViewModel
 import com.google.android.material.bottomsheet.BottomSheetDialog
+import com.google.android.material.chip.Chip
+import com.google.android.material.chip.ChipDrawable
 import com.google.android.material.datepicker.MaterialCalendar
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.android.material.timepicker.MaterialTimePicker
@@ -47,6 +49,7 @@ class HomeFragment : Fragment(), View.OnClickListener, ItemClick {
     private val calendarTime = Calendar.getInstance()
     private var hourSet = calendarTime.get(Calendar.HOUR_OF_DAY)
     private var minuteSet = calendarTime.get(Calendar.MINUTE)
+    val todoAdapter = TodoAdapter()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -65,7 +68,6 @@ class HomeFragment : Fragment(), View.OnClickListener, ItemClick {
         binding.textCheckAll.setOnClickListener(this)
 
         //RecyclerView
-        val todoAdapter = TodoAdapter()
         with(binding.rvTodo) {
             adapter = todoAdapter
             layoutManager = LinearLayoutManager(requireContext())
@@ -73,9 +75,7 @@ class HomeFragment : Fragment(), View.OnClickListener, ItemClick {
 
         //ViewModel
         todoViewModel = ViewModelProvider(this).get(TodoViewModel::class.java)
-        todoViewModel.getAllData(0).observe(viewLifecycleOwner, Observer { todo ->
-            todoAdapter.setData(todo)
-        })
+
         todoAdapter.setItemClick(this)
 
         //Add Menu
@@ -83,6 +83,9 @@ class HomeFragment : Fragment(), View.OnClickListener, ItemClick {
 
         //Shared Preference
         sharedPref = SharedPref(requireContext())
+
+        //Chip Category
+        chipOptionShow()
     }
 
     override fun onClick(v: View?) {
@@ -184,10 +187,14 @@ class HomeFragment : Fragment(), View.OnClickListener, ItemClick {
         val popMenu = PopupMenu(requireContext(), bindingBottom.chipCategory)
 
         todoViewModel.getAllCategory.observe(viewLifecycleOwner, Observer { cat ->
-            val l = cat.size - 1
-            for (i in 0..l) {
-                popMenu.menu.add(i, cat[i].id!!, i, cat[i].cat_title)
+            for (i in cat.indices) {
+                if (cat[i].id == 0) {
+                    popMenu.menu.add(i, cat[i].id!!, i, R.string.no_category)
+                } else {
+                    popMenu.menu.add(i, cat[i].id!!, i, cat[i].cat_title)
+                }
             }
+//            popMenu.menu.add(cat.size, cat.size, cat.size, "Add Category")
         })
 
         popMenu.setOnMenuItemClickListener { item: MenuItem? ->
@@ -226,6 +233,7 @@ class HomeFragment : Fragment(), View.OnClickListener, ItemClick {
             val category = Category(null, categoryInput)
             todoViewModel.addCategoryTodo(category)
             Toast.makeText(requireContext(), "Record inserted", Toast.LENGTH_SHORT).show()
+            binding.chipGroup.removeAllViews()
         } else {
             Toast.makeText(requireContext(), "Please input category", Toast.LENGTH_SHORT).show()
         }
@@ -319,5 +327,41 @@ class HomeFragment : Fragment(), View.OnClickListener, ItemClick {
     override fun onItemClickStatus(position: Int, status: Int) {
         val statusNum = if (status == 0) 1 else 0
         todoViewModel.updateStatusTodo(statusNum, position)
+    }
+
+    private fun chipOptionShow() {
+        todoViewModel.getAllCategory.observe(viewLifecycleOwner, Observer { cat ->
+            for (i in cat.indices) {
+                val chip = Chip(requireContext())
+                val chipDrawable = ChipDrawable.createFromAttributes(requireContext(), null, 0, R.style.Widget_MaterialComponents_Chip_Choice)
+
+                chip.setChipDrawable(chipDrawable)
+                chip.text = cat[i].cat_title
+
+                binding.chipGroup.addView(chip)
+
+                val chipGet = binding.chipGroup.getChildAt(i)
+
+                if (i == 0) {
+                    chip.isChecked = true
+                    todoViewModel.getAllData(0).observe(viewLifecycleOwner, Observer { todo ->
+                        todoAdapter.setData(todo)
+                    })
+                }
+
+                chipGet.setOnClickListener {
+                    if (cat[i].id == 0) {
+                        todoViewModel.getAllData(0).observe(viewLifecycleOwner, Observer { todo ->
+                            todoAdapter.setData(todo)
+                        })
+                    } else {
+                        todoViewModel.getTodoByCat(cat[i].id!!).observe(viewLifecycleOwner, Observer { t ->
+                            todoAdapter.setData(t)
+                        })
+                    }
+                }
+
+            }
+        })
     }
 }
