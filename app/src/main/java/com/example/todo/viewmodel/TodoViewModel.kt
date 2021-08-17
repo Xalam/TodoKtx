@@ -70,4 +70,20 @@ class TodoViewModel(application: Application) : AndroidViewModel(application) {
     fun getTodoByCat(id_cat: Int): LiveData<List<Todo>> {
         return repository.readTodoByCat(id_cat)
     }
+
+    fun deleteCategory(id_cat: Int) {
+        viewModelScope.launch(Dispatchers.IO) {
+            repository.deleteCategory(id_cat)
+        }
+    }
+
+    fun deleteTodoCategory(id_cat: Int) {
+        viewModelScope.launch(Dispatchers.IO) {
+            repository.deleteTodoCategory(id_cat)
+        }
+    }
+
+    fun getCategoryId(id_cat: Int): LiveData<Category> {
+        return repository.getCategoryId(id_cat)
+    }
 }

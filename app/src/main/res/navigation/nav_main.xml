@@ -8,7 +8,7 @@
     <fragment
         android:id="@+id/homeFragment"
         android:name="com.example.todo.ui.fragment.HomeFragment"
-        android:label="fragment_home"
+        android:label="Todo"
         tools:layout="@layout/fragment_home" >
         <action
             android:id="@+id/action_homeFragment_to_detailFragment"
@@ -26,7 +26,7 @@
     <fragment
         android:id="@+id/detailFragment"
         android:name="com.example.todo.ui.fragment.DetailFragment"
-        android:label="fragment_detail"
+        android:label="Detail Todo"
         tools:layout="@layout/fragment_detail" >
         <action
             android:id="@+id/action_detailFragment_to_homeFragment"
@@ -35,7 +35,7 @@
     <fragment
         android:id="@+id/editFragment"
         android:name="com.example.todo.ui.fragment.EditFragment"
-        android:label="fragment_edit"
+        android:label="Edit Todo"
         tools:layout="@layout/fragment_edit" >
         <action
             android:id="@+id/action_editFragment_to_homeFragment"
@@ -47,7 +47,7 @@
     <fragment
         android:id="@+id/completedFragment"
         android:name="com.example.todo.ui.fragment.CompletedFragment"
-        android:label="fragment_completed"
+        android:label="Completed Todo"
         tools:layout="@layout/fragment_completed" >
         <action
             android:id="@+id/action_completedFragment_to_homeFragment"
@@ -56,7 +56,7 @@
     <fragment
         android:id="@+id/categoryFragment"
         android:name="com.example.todo.ui.fragment.CategoryFragment"
-        android:label="fragment_category"
+        android:label="Category"
         tools:layout="@layout/fragment_category" >
         <action
             android:id="@+id/action_categoryFragment_to_homeFragment"

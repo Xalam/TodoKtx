@@ -32,6 +32,12 @@ interface TodoDao {
     @Query("SELECT * FROM category_table")
     fun getAllCategory(): LiveData<List<Category>>
 
-    @Delete
-    fun deleteCategory(category: Category)
+    @Query("DELETE FROM category_table WHERE id = :id_cat")
+    suspend fun deleteCategory(id_cat: Int)
+
+    @Query("DELETE FROM todo_table WHERE category_id = :id_cat")
+    suspend fun deleteTodoCategory(id_cat: Int)
+
+    @Query("SELECT * FROM category_table WHERE id = :id_cat")
+    fun getCategoryId(id_cat: Int): LiveData<Category>
 }

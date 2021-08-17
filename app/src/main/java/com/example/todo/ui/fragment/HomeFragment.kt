@@ -6,8 +6,6 @@ import android.app.Dialog
 import android.os.Build
 import android.os.Bundle
 import android.text.TextUtils
-import android.text.format.DateFormat.is24HourFormat
-import android.util.Log
 import android.view.*
 import android.widget.PopupMenu
 import android.widget.Toast
@@ -20,7 +18,6 @@ import com.example.todo.R
 import com.example.todo.data.Category
 import com.example.todo.data.Todo
 import com.example.todo.databinding.BottomAddDialogBinding
-import com.example.todo.databinding.CategoryAddDialogBinding
 import com.example.todo.databinding.FragmentHomeBinding
 import com.example.todo.ui.adapter.TodoAdapter
 import com.example.todo.utils.ItemClick
@@ -30,7 +27,6 @@ import com.example.todo.viewmodel.TodoViewModel
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipDrawable
-import com.google.android.material.datepicker.MaterialCalendar
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.android.material.timepicker.MaterialTimePicker
 import com.google.android.material.timepicker.TimeFormat
@@ -42,7 +38,6 @@ class HomeFragment : Fragment(), View.OnClickListener, ItemClick {
     private lateinit var binding: FragmentHomeBinding
     private lateinit var todoViewModel: TodoViewModel
     private lateinit var bindingBottom: BottomAddDialogBinding
-    private lateinit var bindingDialog: CategoryAddDialogBinding
     private lateinit var sharedPref: SharedPref
     private var listCategory = ArrayList<Category>()
     private val today = MaterialDatePicker.todayInUtcMilliseconds()
@@ -85,6 +80,7 @@ class HomeFragment : Fragment(), View.OnClickListener, ItemClick {
         sharedPref = SharedPref(requireContext())
 
         //Chip Category
+        binding.chipGroup.removeAllViews()
         chipOptionShow()
     }
 
@@ -92,7 +88,7 @@ class HomeFragment : Fragment(), View.OnClickListener, ItemClick {
         if (v == binding.floatingAdd) {
             showBottomDialog()
         } else if (v == binding.buttonCategoryAdd) {
-            categoryAddDialog()
+            findNavController().navigate(R.id.action_homeFragment_to_categoryFragment)
         } else if (v == binding.textCheckAll) {
             findNavController().navigate(R.id.action_homeFragment_to_completedFragment)
         }
@@ -203,40 +199,6 @@ class HomeFragment : Fragment(), View.OnClickListener, ItemClick {
             true
         }
         popMenu.show()
-    }
-
-    @SuppressLint("UseCompatLoadingForDrawables")
-    private fun categoryAddDialog() {
-        val dialogCategory = Dialog(requireContext())
-
-        bindingDialog = CategoryAddDialogBinding.inflate(LayoutInflater.from(requireContext()))
-        dialogCategory.setContentView(bindingDialog.root)
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            dialogCategory.window?.setBackgroundDrawable(requireContext().resources.getDrawable(R.drawable.bg_round_dialog, requireContext().theme))
-        }
-
-        bindingDialog.buttonCancelCategory.setOnClickListener { dialogCategory.dismiss() }
-        bindingDialog.buttonSaveCategory.setOnClickListener {
-            insertCategoryDatabase()
-            dialogCategory.dismiss()
-        }
-
-        dialogCategory.window?.setLayout(ViewGroup.MarginLayoutParams.MATCH_PARENT, ViewGroup.MarginLayoutParams.WRAP_CONTENT)
-        dialogCategory.setCanceledOnTouchOutside(false)
-        dialogCategory.show()
-    }
-
-    private fun insertCategoryDatabase() {
-        val categoryInput = bindingDialog.edtNewCategory.text.toString()
-
-        if (inputCheck(categoryInput, "Input")) {
-            val category = Category(null, categoryInput)
-            todoViewModel.addCategoryTodo(category)
-            Toast.makeText(requireContext(), "Record inserted", Toast.LENGTH_SHORT).show()
-            binding.chipGroup.removeAllViews()
-        } else {
-            Toast.makeText(requireContext(), "Please input category", Toast.LENGTH_SHORT).show()
-        }
     }
 
     private fun openTimePicker() {

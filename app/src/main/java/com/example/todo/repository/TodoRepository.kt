@@ -41,4 +41,17 @@ class TodoRepository(private val todoDao: TodoDao) {
     fun readTodoByCat(id_cat: Int): LiveData<List<Todo>> {
         return todoDao.getCatTodos(id_cat)
     }
+
+    suspend fun deleteCategory(id_cat: Int) {
+        todoDao.deleteCategory(id_cat)
+    }
+
+    suspend fun deleteTodoCategory(id_cat: Int) {
+        todoDao.deleteTodoCategory(id_cat)
+    }
+
+    fun getCategoryId(id_cat: Int): LiveData<Category> {
+        return todoDao.getCategoryId(id_cat)
+    }
+
 }

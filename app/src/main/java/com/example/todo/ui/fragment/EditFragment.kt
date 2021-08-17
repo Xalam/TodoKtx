@@ -3,9 +3,12 @@ package com.example.todo.ui.fragment
 import android.app.AlertDialog
 import android.os.Bundle
 import android.text.TextUtils
+import android.util.Log
 import android.view.*
+import android.widget.PopupMenu
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
@@ -36,8 +39,13 @@ class EditFragment : Fragment(), View.OnClickListener {
         binding.textDescriptionEdit.setText(args.currentTodo.description)
 
         binding.buttonSubmitEdit.setOnClickListener(this)
+        binding.chipCategoryEdit.setOnClickListener(this)
 
         todoViewModel = ViewModelProvider(this).get(TodoViewModel::class.java)
+        todoViewModel.getCategoryId(args.currentTodo.category_id).observe(viewLifecycleOwner, Observer { c ->
+            binding.chipCategoryEdit.text = c.cat_title
+            binding.chipCategoryIdEdit.text = c.id.toString()
+        })
 
         //Add Menu
         setHasOptionsMenu(true)
@@ -47,6 +55,8 @@ class EditFragment : Fragment(), View.OnClickListener {
     override fun onClick(v: View?) {
         if (v == binding.buttonSubmitEdit) {
             updateDatabase()
+        } else if (v == binding.chipCategoryEdit) {
+            categoryShowMenu()
         }
     }
 
@@ -56,7 +66,8 @@ class EditFragment : Fragment(), View.OnClickListener {
 
         if (inputCheck(title, description)) {
             //Create User Object
-            val updateTodo = Todo(args.currentTodo.id, title, description, 1, "2021-08-11", 0)
+            val catId = binding.chipCategoryIdEdit.text.toString()
+            val updateTodo = Todo(args.currentTodo.id, title, description, catId.toInt(), args.currentTodo.date, args.currentTodo.status)
 
             //Create Current User
             todoViewModel.updateTodo(updateTodo)
@@ -95,5 +106,28 @@ class EditFragment : Fragment(), View.OnClickListener {
         builder.setTitle("Delete ${args.currentTodo.title}")
         builder.setMessage("Are you sure you want to delete ${args.currentTodo.title} ?")
         builder.create().show()
+    }
+
+    private fun categoryShowMenu() {
+        val popMenu = PopupMenu(requireContext(), binding.chipCategoryEdit)
+
+        todoViewModel.getAllCategory.observe(viewLifecycleOwner, Observer { cat ->
+            for (i in cat.indices) {
+                if (cat[i].id == 0) {
+                    popMenu.menu.add(i, cat[i].id!!, i, R.string.no_category)
+                } else {
+                    popMenu.menu.add(i, cat[i].id!!, i, cat[i].cat_title)
+                }
+            }
+//            popMenu.menu.add(cat.size, cat.size, cat.size, "Add Category")
+        })
+
+        popMenu.setOnMenuItemClickListener { item: MenuItem? ->
+            binding.chipCategoryEdit.text = item!!.title
+            binding.chipCategoryIdEdit.text = item.itemId.toString()
+            true
+        }
+
+        popMenu.show()
     }
 }
