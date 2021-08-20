@@ -1,6 +1,7 @@
 package com.example.todo.ui.adapter
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isGone
 import androidx.recyclerview.widget.RecyclerView
@@ -32,7 +33,9 @@ class CategoryAdapter: RecyclerView.Adapter<CategoryAdapter.ListViewHolder>() {
             fun bind(category: Category) {
                 with(binding) {
                     if (category.id == 0) {
-                        consCat.isGone = true
+                        circleCat.visibility = View.GONE
+                        textCat.visibility = View.GONE
+                        buttonDeleteCat.visibility = View.GONE
                     }
 
                     textCat.text = category.cat_title

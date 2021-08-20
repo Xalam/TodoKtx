@@ -32,6 +32,7 @@ class CompletedFragment : Fragment(), ItemClick {
 
         //RecyclerView
         val todoAdapter = TodoAdapter()
+
         with(binding.rvTodoCompleted) {
             adapter = todoAdapter
             layoutManager = LinearLayoutManager(requireContext())
@@ -41,6 +42,11 @@ class CompletedFragment : Fragment(), ItemClick {
         todoViewModel = ViewModelProvider(this).get(TodoViewModel::class.java)
         todoViewModel.getAllData(1).observe(viewLifecycleOwner, Observer { todo ->
             todoAdapter.setData(todo)
+            if (todo.isEmpty()) {
+                binding.relTextNothing.visibility = View.VISIBLE
+            } else {
+                binding.relTextNothing.visibility = View.GONE
+            }
         })
         todoAdapter.setItemClick(this)
     }

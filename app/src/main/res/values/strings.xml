@@ -13,4 +13,7 @@
     <string name="cancel">Cancel</string>
     <string name="check_all_completed_tasks">Check all completed tasks</string>
     <string name="update">Update</string>
+    <string name="nothing">Nothing to see here yet.</string>
+    <string name="when_you">When you completed the task, you\'ll see it here.</string>
+    <string name="when_you_add">When you added some task, you\'ll see it here.</string>
 </resources>

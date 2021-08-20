@@ -308,6 +308,11 @@ class HomeFragment : Fragment(), View.OnClickListener, ItemClick {
                     chip.isChecked = true
                     todoViewModel.getAllData(0).observe(viewLifecycleOwner, Observer { todo ->
                         todoAdapter.setData(todo)
+                        if (todo.isEmpty()) {
+                            binding.relTextNothingHome.visibility = View.VISIBLE
+                        } else {
+                            binding.relTextNothingHome.visibility = View.GONE
+                        }
                     })
                 }
 
@@ -315,10 +320,20 @@ class HomeFragment : Fragment(), View.OnClickListener, ItemClick {
                     if (cat[i].id == 0) {
                         todoViewModel.getAllData(0).observe(viewLifecycleOwner, Observer { todo ->
                             todoAdapter.setData(todo)
+                            if (todo.isEmpty()) {
+                                binding.relTextNothingHome.visibility = View.VISIBLE
+                            } else {
+                                binding.relTextNothingHome.visibility = View.GONE
+                            }
                         })
                     } else {
                         todoViewModel.getTodoByCat(cat[i].id!!).observe(viewLifecycleOwner, Observer { t ->
                             todoAdapter.setData(t)
+                            if (t.isEmpty()) {
+                                binding.relTextNothingHome.visibility = View.VISIBLE
+                            } else {
+                                binding.relTextNothingHome.visibility = View.GONE
+                            }
                         })
                     }
                 }
