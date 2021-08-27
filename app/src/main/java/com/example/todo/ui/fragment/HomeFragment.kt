@@ -20,6 +20,7 @@ import com.example.todo.data.Todo
 import com.example.todo.databinding.BottomAddDialogBinding
 import com.example.todo.databinding.FragmentHomeBinding
 import com.example.todo.ui.adapter.TodoAdapter
+import com.example.todo.utils.AlarmReceiver
 import com.example.todo.utils.ItemClick
 import com.example.todo.utils.OtherFunction
 import com.example.todo.utils.SharedPref
@@ -39,6 +40,7 @@ class HomeFragment : Fragment(), View.OnClickListener, ItemClick {
     private lateinit var todoViewModel: TodoViewModel
     private lateinit var bindingBottom: BottomAddDialogBinding
     private lateinit var sharedPref: SharedPref
+    private lateinit var alarmReceiver: AlarmReceiver
     private var listCategory = ArrayList<Category>()
     private val today = MaterialDatePicker.todayInUtcMilliseconds()
     private val calendarTime = Calendar.getInstance()
@@ -82,6 +84,9 @@ class HomeFragment : Fragment(), View.OnClickListener, ItemClick {
         //Chip Category
         binding.chipGroup.removeAllViews()
         chipOptionShow()
+
+        //Alarm Receiver
+        alarmReceiver = AlarmReceiver()
     }
 
     override fun onClick(v: View?) {
@@ -166,6 +171,8 @@ class HomeFragment : Fragment(), View.OnClickListener, ItemClick {
                 hourSet = timeArray[0][0].toInt()
                 minuteSet = timeArray[0][1].toInt()
             }
+
+            alarmReceiver.setAlarm(requireContext(), dateSave, "$hourSet:$minuteSet", bindingBottom.edtTitleAdd.text.toString())
 
             val todo = Todo(null, title, description, catId, "$dateSave $hourSet:$minuteSet", 0)
             todoViewModel.addTodo(todo)
