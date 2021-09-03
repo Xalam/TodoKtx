@@ -15,4 +15,6 @@
     <color name="red_700">#D32F2F</color>
     <color name="blue_a_700">#2962FF</color>
     <color name="blue_a_400">#2979FF</color>
+    <color name="orange_a_700">#FF6D00</color>
+    <color name="yellow_a_700">#FFD600</color>
 </resources>

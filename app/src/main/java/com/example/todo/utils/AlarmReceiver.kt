@@ -18,7 +18,6 @@ class AlarmReceiver: BroadcastReceiver() {
 
     companion object {
         const val EXTRA_MESSAGE = "message"
-        const val EXTRA_ID_ALARM = "id_alarm"
         private var ID_ALARM = 100
     }
 

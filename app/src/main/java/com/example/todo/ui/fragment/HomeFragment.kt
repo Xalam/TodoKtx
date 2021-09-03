@@ -1,14 +1,14 @@
 package com.example.todo.ui.fragment
 
-import android.annotation.SuppressLint
 import android.app.*
 import android.content.Context
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.text.TextUtils
-import android.util.Log
 import android.view.*
+import android.view.animation.Animation
+import android.view.animation.AnimationUtils
 import android.widget.PopupMenu
 import android.widget.Toast
 import androidx.fragment.app.Fragment
@@ -42,10 +42,16 @@ class HomeFragment : Fragment(), View.OnClickListener, ItemClick {
 
     companion object {
         const val EXTRA_MESSAGE = "message"
-        const val EXTRA_ID_ALARM = "id_alarm"
         private const val DATE_FORMAT = "yyyy-MM-dd"
         private const val TIME_FORMAT = "HH:mm"
     }
+
+    private val rotateOpen: Animation by lazy { AnimationUtils.loadAnimation(requireContext(), R.anim.rotate_open_anim) }
+    private val rotateClose: Animation by lazy { AnimationUtils.loadAnimation(requireContext(), R.anim.rotate_close_anim) }
+    private val fromBottom: Animation by lazy { AnimationUtils.loadAnimation(requireContext(), R.anim.from_bottom_anim) }
+    private val toBottom: Animation by lazy { AnimationUtils.loadAnimation(requireContext(), R.anim.to_bottom_anim) }
+
+    private var clicked = false
 
     private lateinit var binding: FragmentHomeBinding
     private lateinit var todoViewModel: TodoViewModel
@@ -74,6 +80,8 @@ class HomeFragment : Fragment(), View.OnClickListener, ItemClick {
         binding.floatingAdd.setOnClickListener(this)
         binding.buttonCategoryAdd.setOnClickListener(this)
         binding.textCheckAll.setOnClickListener(this)
+        binding.floatingCreate.setOnClickListener(this)
+        binding.floatingCalendar.setOnClickListener(this)
 
         //RecyclerView
         with(binding.rvTodo) {
@@ -98,12 +106,22 @@ class HomeFragment : Fragment(), View.OnClickListener, ItemClick {
     }
 
     override fun onClick(v: View?) {
-        if (v == binding.floatingAdd) {
-            showBottomDialog()
-        } else if (v == binding.buttonCategoryAdd) {
-            findNavController().navigate(R.id.action_homeFragment_to_categoryFragment)
-        } else if (v == binding.textCheckAll) {
-            findNavController().navigate(R.id.action_homeFragment_to_completedFragment)
+        when (v) {
+            binding.floatingAdd -> {
+                floatAddClicked()
+            }
+            binding.floatingCreate -> {
+                showBottomDialog()
+            }
+            binding.floatingCalendar -> {
+                Toast.makeText(requireContext(), "Calendar", Toast.LENGTH_SHORT).show()
+            }
+            binding.buttonCategoryAdd -> {
+                findNavController().navigate(R.id.action_homeFragment_to_categoryFragment)
+            }
+            binding.textCheckAll -> {
+                findNavController().navigate(R.id.action_homeFragment_to_completedFragment)
+            }
         }
     }
 
@@ -416,6 +434,45 @@ class HomeFragment : Fragment(), View.OnClickListener, ItemClick {
             false
         } catch (e: ParseException) {
             true
+        }
+    }
+
+    private fun floatAddClicked() {
+        setVisibility(clicked)
+        setAnimation(clicked)
+        setClickable(clicked)
+        clicked = !clicked
+    }
+
+    private fun setVisibility(clicked: Boolean) {
+        if (!clicked) {
+            binding.floatingCreate.visibility = View.VISIBLE
+            binding.floatingCalendar.visibility = View.VISIBLE
+        } else {
+            binding.floatingCreate.visibility = View.INVISIBLE
+            binding.floatingCalendar.visibility = View.INVISIBLE
+        }
+    }
+
+    private fun setAnimation(clicked: Boolean) {
+        if (!clicked) {
+            binding.floatingCreate.startAnimation(fromBottom)
+            binding.floatingCalendar.startAnimation(fromBottom)
+            binding.floatingAdd.startAnimation(rotateOpen)
+        } else {
+            binding.floatingCreate.startAnimation(toBottom)
+            binding.floatingCalendar.startAnimation(toBottom)
+            binding.floatingAdd.startAnimation(rotateClose)
+        }
+    }
+
+    private fun setClickable(clicked: Boolean) {
+        if (!clicked) {
+            binding.floatingCreate.isClickable = false
+            binding.floatingCalendar.isClickable = false
+        } else {
+            binding.floatingCreate.isClickable = true
+            binding.floatingCalendar.isClickable = true
         }
     }
 }
