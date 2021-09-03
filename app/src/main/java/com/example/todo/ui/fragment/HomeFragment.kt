@@ -1,11 +1,13 @@
 package com.example.todo.ui.fragment
 
 import android.annotation.SuppressLint
-import android.app.AlertDialog
-import android.app.Dialog
+import android.app.*
+import android.content.Context
+import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.text.TextUtils
+import android.util.Log
 import android.view.*
 import android.widget.PopupMenu
 import android.widget.Toast
@@ -31,21 +33,30 @@ import com.google.android.material.chip.ChipDrawable
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.android.material.timepicker.MaterialTimePicker
 import com.google.android.material.timepicker.TimeFormat
+import java.text.ParseException
+import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
 
 class HomeFragment : Fragment(), View.OnClickListener, ItemClick {
 
+    companion object {
+        const val EXTRA_MESSAGE = "message"
+        const val EXTRA_ID_ALARM = "id_alarm"
+        private const val DATE_FORMAT = "yyyy-MM-dd"
+        private const val TIME_FORMAT = "HH:mm"
+    }
+
     private lateinit var binding: FragmentHomeBinding
     private lateinit var todoViewModel: TodoViewModel
     private lateinit var bindingBottom: BottomAddDialogBinding
     private lateinit var sharedPref: SharedPref
-    private lateinit var alarmReceiver: AlarmReceiver
     private var listCategory = ArrayList<Category>()
     private val today = MaterialDatePicker.todayInUtcMilliseconds()
     private val calendarTime = Calendar.getInstance()
     private var hourSet = calendarTime.get(Calendar.HOUR_OF_DAY)
     private var minuteSet = calendarTime.get(Calendar.MINUTE)
+    private var count = 0
     val todoAdapter = TodoAdapter()
 
     override fun onCreateView(
@@ -84,9 +95,6 @@ class HomeFragment : Fragment(), View.OnClickListener, ItemClick {
         //Chip Category
         binding.chipGroup.removeAllViews()
         chipOptionShow()
-
-        //Alarm Receiver
-        alarmReceiver = AlarmReceiver()
     }
 
     override fun onClick(v: View?) {
@@ -172,7 +180,14 @@ class HomeFragment : Fragment(), View.OnClickListener, ItemClick {
                 minuteSet = timeArray[0][1].toInt()
             }
 
-            alarmReceiver.setAlarm(requireContext(), dateSave, "$hourSet:$minuteSet", bindingBottom.edtTitleAdd.text.toString())
+            //Check Category Database
+            todoViewModel.isDataTrue().observe(viewLifecycleOwner, Observer { t ->
+                if (t.count == 0) {
+                    todoViewModel.insertFirstCategory(0, getString(R.string.all))
+                }
+            })
+
+            setAlarm(dateSave, "$hourSet:$minuteSet", bindingBottom.edtTitleAdd.text.toString())
 
             val todo = Todo(null, title, description, catId, "$dateSave $hourSet:$minuteSet", 0)
             todoViewModel.addTodo(todo)
@@ -347,5 +362,60 @@ class HomeFragment : Fragment(), View.OnClickListener, ItemClick {
 
             }
         })
+    }
+
+    private fun setAlarm(date: String, time: String, message: String) {
+
+        if (isDateInvalid(date, DATE_FORMAT) || isDateInvalid(time, TIME_FORMAT)) return
+
+        val alarmManager = activity?.getSystemService(Context.ALARM_SERVICE) as AlarmManager
+        val intent = Intent(activity, AlarmReceiver::class.java)
+        intent.putExtra(EXTRA_MESSAGE, message)
+
+        val dateArray = date.split("-").toTypedArray()
+        val timeArray = time.split(":").toTypedArray()
+
+        val calendar = GregorianCalendar()
+//        calendar.set(Calendar.YEAR, Integer.parseInt(dateArray[0]))
+//        calendar.set(Calendar.MONTH, Integer.parseInt(dateArray[1]))
+//        calendar.set(Calendar.DAY_OF_MONTH, Integer.parseInt(dateArray[2]))
+        calendar.set(Calendar.DATE, Integer.parseInt(dateArray[2]))
+        calendar.set(Calendar.HOUR_OF_DAY, Integer.parseInt(timeArray[0]))
+        calendar.set(Calendar.MINUTE, Integer.parseInt(timeArray[1]))
+        calendar.set(Calendar.SECOND, 0)
+        calendar.set(Calendar.MILLISECOND, 0)
+
+        val pendingIntent = PendingIntent.getBroadcast(activity, count, intent, PendingIntent.FLAG_UPDATE_CURRENT)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            alarmManager.setAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, calendar.timeInMillis, pendingIntent)
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+                alarmManager.setExact(AlarmManager.RTC_WAKEUP, calendar.timeInMillis, pendingIntent)
+            } else {
+                alarmManager.set(AlarmManager.RTC_WAKEUP, calendar.timeInMillis, pendingIntent)
+            }
+            count++
+
+            val intentPending = PendingIntent.getBroadcast(activity, count, intent, 0)
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                alarmManager.setAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, calendar.timeInMillis - 600000, intentPending)
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+                    alarmManager.setExact(AlarmManager.RTC_WAKEUP, calendar.timeInMillis - 600000, intentPending)
+                } else {
+                    alarmManager.set(AlarmManager.RTC_WAKEUP, calendar.timeInMillis - 600000, intentPending)
+                }
+            }
+            count++
+        }
+    }
+
+    private fun isDateInvalid(date: String, format: String): Boolean {
+        return try {
+            val df = SimpleDateFormat(format, Locale.getDefault())
+            df.isLenient = false
+            df.parse(date)
+            false
+        } catch (e: ParseException) {
+            true
+        }
     }
 }

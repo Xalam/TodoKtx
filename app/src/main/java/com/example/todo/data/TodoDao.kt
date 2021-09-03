@@ -29,6 +29,9 @@ interface TodoDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertCategory(category: Category)
 
+    @Query("INSERT INTO category_table (id, cat_title) VALUES (:id, :cat_title)")
+    suspend fun insertFirstCategory(id: Int, cat_title: String);
+
     @Query("SELECT * FROM category_table")
     fun getAllCategory(): LiveData<List<Category>>
 
@@ -40,4 +43,7 @@ interface TodoDao {
 
     @Query("SELECT * FROM category_table WHERE id = :id_cat")
     fun getCategoryId(id_cat: Int): LiveData<Category>
+
+    @Query("SELECT COUNT(id) as count FROM category_table")
+    fun isDataTrue(): LiveData<CountCategory>
 }

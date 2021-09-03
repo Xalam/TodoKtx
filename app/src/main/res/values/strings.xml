@@ -16,4 +16,5 @@
     <string name="nothing">Nothing to see here yet.</string>
     <string name="when_you">When you completed the task, you\'ll see it here.</string>
     <string name="when_you_add">When you added some task, you\'ll see it here.</string>
+    <string name="all">All</string>
 </resources>

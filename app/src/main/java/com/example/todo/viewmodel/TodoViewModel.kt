@@ -3,8 +3,10 @@ package com.example.todo.viewmodel
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.example.todo.data.Category
+import com.example.todo.data.CountCategory
 import com.example.todo.data.Todo
 import com.example.todo.data.TodoDatabase
 import com.example.todo.repository.TodoRepository
@@ -85,5 +87,15 @@ class TodoViewModel(application: Application) : AndroidViewModel(application) {
 
     fun getCategoryId(id_cat: Int): LiveData<Category> {
         return repository.getCategoryId(id_cat)
+    }
+
+    fun insertFirstCategory(id: Int, cat_title: String) {
+        viewModelScope.launch(Dispatchers.IO) {
+            repository.insertFirstCategory(id, cat_title)
+        }
+    }
+
+    fun isDataTrue(): LiveData<CountCategory> {
+        return repository.isDataTrue()
     }
 }
