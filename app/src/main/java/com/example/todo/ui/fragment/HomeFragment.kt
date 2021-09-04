@@ -468,11 +468,11 @@ class HomeFragment : Fragment(), View.OnClickListener, ItemClick {
 
     private fun setClickable(clicked: Boolean) {
         if (!clicked) {
-            binding.floatingCreate.isClickable = false
-            binding.floatingCalendar.isClickable = false
-        } else {
             binding.floatingCreate.isClickable = true
             binding.floatingCalendar.isClickable = true
+        } else {
+            binding.floatingCreate.isClickable = false
+            binding.floatingCalendar.isClickable = false
         }
     }
 }
