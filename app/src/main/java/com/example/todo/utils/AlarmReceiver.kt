@@ -8,11 +8,10 @@ import android.content.Context
 import android.content.Intent
 import android.media.RingtoneManager
 import android.os.Build
-import android.util.Log
 import androidx.core.app.NotificationCompat
 import androidx.core.content.ContextCompat
 import com.example.todo.R
-import com.example.todo.ui.MainActivity
+import com.example.todo.ui.AlarmActivity
 
 class AlarmReceiver: BroadcastReceiver() {
 
@@ -32,7 +31,8 @@ class AlarmReceiver: BroadcastReceiver() {
         val channelId = "Channel_1"
         val channelName = "Todo Alarm Channel"
 
-        val intent = Intent(context, MainActivity::class.java)
+        val intent = Intent(context, AlarmActivity::class.java)
+        intent.putExtra(EXTRA_MESSAGE, message)
         intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
         intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK
         val pendingIntent = PendingIntent.getActivity(context, 0, intent, 0)
