@@ -13,9 +13,12 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Todo">
         <activity
+            android:name=".ui.MainActivity"
+            android:exported="true" />
+        <activity
             android:name=".ui.AlarmActivity"
             android:exported="true" />
-        <activity android:name=".ui.MainActivity">
+        <activity android:name=".ui.SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
