@@ -17,22 +17,28 @@ class AlarmReceiver: BroadcastReceiver() {
 
     companion object {
         const val EXTRA_MESSAGE = "message"
+        const val EXTRA_DESCRIPTION = "description"
+        const val EXTRA_TIME = "time"
         private var ID_ALARM = 100
     }
 
     override fun onReceive(context: Context?, intent: Intent?) {
         val title = "Task Reminder"
         val message = intent!!.getStringExtra(EXTRA_MESSAGE)
+        val description = intent.getStringExtra(EXTRA_DESCRIPTION)
+        val time = intent.getStringExtra(EXTRA_TIME)
 
-        showAlarmNotification(context!!, title, message!!, ID_ALARM)
+        showAlarmNotification(context!!, title, message!!, description!!, time!!, ID_ALARM)
     }
 
-    private fun showAlarmNotification(context: Context, title: String, message: String, notifId: Int) {
+    private fun showAlarmNotification(context: Context, title: String, message: String, description: String, time: String, notifId: Int) {
         val channelId = "Channel_1"
         val channelName = "Todo Alarm Channel"
 
         val intent = Intent(context, AlarmActivity::class.java)
         intent.putExtra(EXTRA_MESSAGE, message)
+        intent.putExtra(EXTRA_DESCRIPTION, description)
+        intent.putExtra(EXTRA_TIME, time)
         intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
         intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK
         val pendingIntent = PendingIntent.getActivity(context, 0, intent, 0)

@@ -41,7 +41,6 @@ import kotlin.collections.ArrayList
 class HomeFragment : Fragment(), View.OnClickListener, ItemClick {
 
     companion object {
-        const val EXTRA_MESSAGE = "message"
         private const val DATE_FORMAT = "yyyy-MM-dd"
         private const val TIME_FORMAT = "HH:mm"
     }
@@ -114,7 +113,8 @@ class HomeFragment : Fragment(), View.OnClickListener, ItemClick {
                 showBottomDialog()
             }
             binding.floatingCalendar -> {
-                Toast.makeText(requireContext(), "Calendar", Toast.LENGTH_SHORT).show()
+                val showCalendarViewFragment = CalendarViewFragment()
+                showCalendarViewFragment.show(childFragmentManager, CalendarViewFragment().tag)
             }
             binding.buttonCategoryAdd -> {
                 findNavController().navigate(R.id.action_homeFragment_to_categoryFragment)
@@ -205,7 +205,7 @@ class HomeFragment : Fragment(), View.OnClickListener, ItemClick {
                 }
             })
 
-            setAlarm(dateSave, "$hourSet:$minuteSet", bindingBottom.edtTitleAdd.text.toString())
+            setAlarm(dateSave, "$hourSet:$minuteSet", bindingBottom.edtTitleAdd.text.toString(), bindingBottom.edtDescriptionAdd.text.toString())
 
             val todo = Todo(null, title, description, catId, "$dateSave $hourSet:$minuteSet", 0)
             todoViewModel.addTodo(todo)
@@ -382,13 +382,15 @@ class HomeFragment : Fragment(), View.OnClickListener, ItemClick {
         })
     }
 
-    private fun setAlarm(date: String, time: String, message: String) {
+    private fun setAlarm(date: String, time: String, message: String, description: String) {
 
         if (isDateInvalid(date, DATE_FORMAT) || isDateInvalid(time, TIME_FORMAT)) return
 
         val alarmManager = activity?.getSystemService(Context.ALARM_SERVICE) as AlarmManager
         val intent = Intent(activity, AlarmReceiver::class.java)
-        intent.putExtra(EXTRA_MESSAGE, message)
+        intent.putExtra(AlarmReceiver.EXTRA_MESSAGE, message)
+        intent.putExtra(AlarmReceiver.EXTRA_DESCRIPTION, description)
+        intent.putExtra(AlarmReceiver.EXTRA_TIME, "$date $time")
 
         val dateArray = date.split("-").toTypedArray()
         val timeArray = time.split(":").toTypedArray()

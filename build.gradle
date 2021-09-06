@@ -38,4 +38,5 @@ ext {
     coroutinesVersion = '1.5.1'
     navVersion = '2.3.5'
     lottieVersion = '4.0.0'
+    calendarVersion = '1.7.0'
 }

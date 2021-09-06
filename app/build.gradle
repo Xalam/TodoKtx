@@ -71,4 +71,7 @@ dependencies {
 
     //Lottie
     implementation "com.airbnb.android:lottie:$lottieVersion"
+
+    //Calendar View
+    implementation "com.applandeo:material-calendar-view:$calendarVersion"
 }
